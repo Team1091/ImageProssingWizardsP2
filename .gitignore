@@ -6,3 +6,7 @@ bin/
 *.iml
 *.ipr
 *.iws
+
+/.gradle/
+/build/
+
