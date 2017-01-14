@@ -1,0 +1,19 @@
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+mainClassName = "com.team1091.vision.ImageProcessingP1"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.9'
+}
+
+

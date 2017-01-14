@@ -1,3 +1,5 @@
+package com.team1091.vision;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +8,7 @@ import java.awt.Graphics2D;
 
 import javax.imageio.ImageIO;
 
-public class MageProssingP1 {
+public class ImageProcessingP1 {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -45,7 +47,7 @@ public class MageProssingP1 {
 			Graphics2D g = testImage.createGraphics();
 			g.setColor(Color.BLUE);
 			g.fillRect(xcenter - 5, ycenter - 5, 10, 10);
-			
+
 			int counter = 0;
 			int width = 0;
 			for(int x = xcenter; x < testImage.getWidth(); x++)
