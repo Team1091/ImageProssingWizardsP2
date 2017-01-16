@@ -1,7 +1,5 @@
 package com.team1091.vision;
 
-import com.github.sarxos.webcam.Webcam;
-
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -54,14 +52,24 @@ public class ImageProcessingP1 {
                 }
             }
         }
-        int xcenter = (int) (xsum / totalcount);
-        int ycenter = (int) (ysum / totalcount);
 
-        outputImage.setRGB(xcenter, ycenter, 0xff);
+        int xcenter;
+        int ycenter;
+
+        if (totalcount == 0) {
+            xcenter = inputImage.getWidth() / 2;
+            ycenter = inputImage.getHeight() / 2;
+        } else {
+            xcenter = (int) (xsum / totalcount);
+            ycenter = (int) (ysum / totalcount);
+        }
+
+//        outputImage.setRGB(xcenter, ycenter, 0xff);
         Graphics2D g = outputImage.createGraphics();
         g.setColor(Color.BLUE);
         g.fillRect(xcenter - 5, ycenter - 5, 10, 10);
 
+        //Distance
         int counter = 0;
         int width = 0;
         for (int x = xcenter; x < outputImage.getWidth(); x++) {
