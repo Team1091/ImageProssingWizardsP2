@@ -1,9 +1,11 @@
 # Image Processing Code
 
-This uses gradle to run.
+![TravisCI](https://travis-ci.org/Team1091/ImageProssingWizardsP2.svg?branch=master)
 
+This project is used to test our image processing code.
 
-To run the code, you can either import it into your ide and run it, or cd to the directory and run
+## Running the project
+To run the code, you can either import the build.gradle into your ide and run it, or cd to the directory and run
 
 ```bash
 ./gradlew run
@@ -19,11 +21,11 @@ gradlew.bat run
 ## Running Tests
 
 ```bash
-./gradlew run
+./gradlew test
 ```
 
 or
 
-```bash
+```cmd
 gradlew.bat test
 ```
