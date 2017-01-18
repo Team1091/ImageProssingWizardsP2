@@ -1,8 +1,11 @@
 package com.team1091.vision;
 
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamPanel;
+import com.github.sarxos.webcam.WebcamResolution;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -12,11 +15,45 @@ import java.io.IOException;
 public class ImageProcessingP1 {
 
     public static void main(String[] args) throws IOException {
+//        Webcam webcam = Webcam.getDefault();
+//        webcam.open();
+//        BufferedImage input = webcam.getImage();
+//        BufferedImage out = process(input);
+//        ImageIO.write(out , "PNG", new File("hashTagYolo.png"));
+
         Webcam webcam = Webcam.getDefault();
-        webcam.open();
-        BufferedImage input = webcam.getImage();
-        BufferedImage out = process(input);
-        ImageIO.write(out , "PNG", new File("hashTagYolo.png"));
+        webcam.setViewSize(WebcamResolution.VGA.getSize());
+
+        WebcamPanel panel = new WebcamPanel(webcam);
+        panel.setFPSDisplayed(true);
+        panel.setDisplayDebugInfo(true);
+        panel.setImageSizeDisplayed(true);
+        panel.setMirrored(true);
+        panel.setPainter(new WebcamPanel.Painter() {
+            @Override
+            public void paintPanel(WebcamPanel panel, Graphics2D g2) {
+
+            }
+
+            @Override
+            public void paintImage(WebcamPanel panel, BufferedImage image, Graphics2D g2) {
+                try {
+                    BufferedImage out = process(image);
+                    g2.drawImage(out, 0, 0, null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+        JFrame window = new JFrame("Test webcam panel");
+        window.add(panel);
+        window.setResizable(true);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.pack();
+        window.setVisible(true);
 
 
         //String dir = "C:\\Users\\Team1091\\Desktop\\PhotoSamplesSpike_2017\\Good";
