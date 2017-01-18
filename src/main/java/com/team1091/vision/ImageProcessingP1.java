@@ -1,5 +1,7 @@
 package com.team1091.vision;
 
+import com.github.sarxos.webcam.Webcam;
+
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,23 +12,25 @@ import java.io.IOException;
 public class ImageProcessingP1 {
 
     public static void main(String[] args) throws IOException {
-//        Webcam webcam = Webcam.getDefault();
-//        webcam.open();
-//        ImageIO.write(webcam.getImage(), "PNG", new File("hashTagYolo.png"));
+        Webcam webcam = Webcam.getDefault();
+        webcam.open();
+        BufferedImage input = webcam.getImage();
+        BufferedImage out = process(input);
+        ImageIO.write(out , "PNG", new File("hashTagYolo.png"));
 
 
         //String dir = "C:\\Users\\Team1091\\Desktop\\PhotoSamplesSpike_2017\\Good";
-        String dir = "C:\\Users\\Team1091\\Desktop\\PhotoSamplesSpike_2017\\TestWidth";
-        File directory = new File(dir);
-        File[] flist = directory.listFiles();
-        dir += "_PROCESSED";
-        directory = new File(dir);
-        directory.mkdir();
-        for (int i = 0; i < flist.length; i++) {
-            BufferedImage image = ImageIO.read(flist[i]);
-            BufferedImage out = process(image);
-            ImageIO.write(out, "PNG", new File(dir + "\\" + flist[i].getName()));
-        }
+//        String dir = "C:\\Users\\Team1091\\Desktop\\PhotoSamplesSpike_2017\\TestWidth";
+//        File directory = new File(dir);
+//        File[] flist = directory.listFiles();
+//        dir += "_PROCESSED";
+//        directory = new File(dir);
+//        directory.mkdir();
+//        for (int i = 0; i < flist.length; i++) {
+//            BufferedImage image = ImageIO.read(flist[i]);
+//            BufferedImage out = process(image);
+//            ImageIO.write(out, "PNG", new File(dir + "\\" + flist[i].getName()));
+//        }
 
     }
 
