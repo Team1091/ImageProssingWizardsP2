@@ -108,7 +108,7 @@ public class ImageProcessingP1 {
 
 //        outputImage.setRGB(xcenter, ycenter, 0xff);
         Graphics2D g = outputImage.createGraphics();
-        g.setColor(Color.CYAN);
+        g.setColor(Color.RED);
 
 
 
@@ -168,6 +168,12 @@ public class ImageProcessingP1 {
         g.drawLine(xcenter, ycenter, xcenter-leftWidth, ycenter);
         g.drawLine(xcenter+rightWidth, ycenter-8, xcenter+rightWidth, ycenter+8);
         g.drawLine(xcenter-leftWidth, ycenter-8, xcenter-leftWidth, ycenter+8);
+        g.drawString(""+width, xcenter, ycenter-25);
+        g.setColor(Color.cyan);
+        int calcXCenter = ((xcenter+rightWidth)+(xcenter-leftWidth))/2;
+        g.drawLine(calcXCenter, ycenter+15, calcXCenter, ycenter-15);
+
+
         return outputImage;
     }
 
