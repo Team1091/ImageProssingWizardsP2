@@ -5,6 +5,7 @@ import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
 
 import javax.imageio.ImageIO;
+import javax.management.DescriptorKey;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -107,12 +108,28 @@ public class ImageProcessingP1 {
 
 //        outputImage.setRGB(xcenter, ycenter, 0xff);
         Graphics2D g = outputImage.createGraphics();
-        g.setColor(Color.BLUE);
-        g.fillRect(xcenter - 5, ycenter - 5, 10, 10);
+        g.setColor(Color.CYAN);
+
+
+
+//        g.fillRect(xcenter - 5, ycenter - 5, 10, 10);
+//        g.drawLine(xcenter-10, ycenter-5,xcenter+10, ycenter-5);
+//        g.drawLine(xcenter+10, ycenter-5, xcenter, ycenter+10);
+//        g.drawLine(xcenter, ycenter+10, xcenter-10, ycenter-5);
+
+//        g.setColor(Color.pink);
+//        g.drawLine(xcenter-10, ycenter+5,xcenter+10, ycenter+5);
+//        g.drawLine(xcenter+10, ycenter+5, xcenter, ycenter-10);
+//        g.drawLine(xcenter, ycenter-10, xcenter-10, ycenter+5);
+//        g.setColor(Color.orange);
+
 
         //Distance
         int counter = 0;
-        int width = 0;
+
+
+        int rightWidth = 0;
+        int leftWidth = 0;
         for (int x = xcenter; x < outputImage.getWidth(); x++) {
             if (getAvg(outputImage, x, ycenter)) {
                 counter++;
@@ -121,7 +138,7 @@ public class ImageProcessingP1 {
                 continue;
             }
             if (counter >= 5) {
-                width += x - xcenter - 5;
+                rightWidth = x - xcenter - 5;
                 break;
             }
         }
@@ -134,16 +151,23 @@ public class ImageProcessingP1 {
                 continue;
             }
             if (counter >= 5) {
-                width += xcenter - (x + 5);
+                leftWidth = xcenter - (x + 5);
                 break;
             }
         }
+        int width = leftWidth + rightWidth;
+
         System.out.println("Width = " + width);
         // F = P * D * (1/W)
         // (F * W) / P = D
         // F = 35p * 60in * (1/2in)
         // F = 1050 p
 
+        g.drawLine(xcenter, ycenter-10, xcenter, ycenter+10);
+        g.drawLine(xcenter, ycenter,xcenter+rightWidth, ycenter);
+        g.drawLine(xcenter, ycenter, xcenter-leftWidth, ycenter);
+        g.drawLine(xcenter+rightWidth, ycenter-8, xcenter+rightWidth, ycenter+8);
+        g.drawLine(xcenter-leftWidth, ycenter-8, xcenter-leftWidth, ycenter+8);
         return outputImage;
     }
 
