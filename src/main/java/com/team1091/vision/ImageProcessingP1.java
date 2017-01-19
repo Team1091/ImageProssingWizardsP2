@@ -4,13 +4,10 @@ import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
 
-import javax.imageio.ImageIO;
-import javax.management.DescriptorKey;
-import javax.swing.*;
+import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class ImageProcessingP1 {
@@ -44,8 +41,6 @@ public class ImageProcessingP1 {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
 
@@ -106,10 +101,8 @@ public class ImageProcessingP1 {
             ycenter = (int) (ysum / totalcount);
         }
 
-//        outputImage.setRGB(xcenter, ycenter, 0xff);
         Graphics2D g = outputImage.createGraphics();
         g.setColor(Color.RED);
-
 
 
 //        g.fillRect(xcenter - 5, ycenter - 5, 10, 10);
@@ -157,22 +150,34 @@ public class ImageProcessingP1 {
         }
         int width = leftWidth + rightWidth;
 
-        System.out.println("Width = " + width);
+//        System.out.println("Width = " + width);
         // F = P * D * (1/W)
         // (F * W) / P = D
         // F = 35p * 60in * (1/2in)
         // F = 1050 p
 
-        g.drawLine(xcenter, ycenter-10, xcenter, ycenter+10);
-        g.drawLine(xcenter, ycenter,xcenter+rightWidth, ycenter);
-        g.drawLine(xcenter, ycenter, xcenter-leftWidth, ycenter);
-        g.drawLine(xcenter+rightWidth, ycenter-8, xcenter+rightWidth, ycenter+8);
-        g.drawLine(xcenter-leftWidth, ycenter-8, xcenter-leftWidth, ycenter+8);
-        g.drawString(""+width, xcenter, ycenter-25);
-        g.setColor(Color.cyan);
-        int calcXCenter = ((xcenter+rightWidth)+(xcenter-leftWidth))/2;
-        g.drawLine(calcXCenter, ycenter+15, calcXCenter, ycenter-15);
+        // X pos of the right and left bars
+        int rightX = xcenter + rightWidth;
+        int leftX = xcenter - leftWidth;
 
+        int calcXCenter = (rightX + leftX) / 2;
+
+        // Center line
+        g.drawLine(xcenter, ycenter - 10, xcenter, ycenter + 10);
+
+        // Right and left bounds
+        g.drawLine(xcenter, ycenter, rightX, ycenter);
+        g.drawLine(xcenter, ycenter, leftX, ycenter);
+        g.drawLine(rightX, ycenter - 8, rightX, ycenter + 8);
+        g.drawLine(leftX, ycenter - 8, leftX, ycenter + 8);
+
+        // Calculated Center
+        g.setColor(Color.cyan);
+        g.drawLine(calcXCenter, ycenter + 15, calcXCenter, ycenter - 15);
+
+        // width labels, px and % screen width
+        g.drawString(width + " px", xcenter, ycenter - 25);
+        g.drawString(((float) width / (float) inputImage.getWidth() * 100f) + " %", xcenter, ycenter + 35);
 
         return outputImage;
     }
