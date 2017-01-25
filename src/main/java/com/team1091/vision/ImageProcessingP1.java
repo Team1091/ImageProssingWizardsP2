@@ -60,7 +60,7 @@ public class ImageProcessingP1 {
         for (int x = 0; x < inputImage.getWidth(); x++) {
             for (int y = 0; y < inputImage.getHeight(); y++) {
                 int green = new Color(inputImage.getRGB(x, y)).getGreen();
-                if (green > 251 && green < 25432) {
+                if (green > 251) {
                     outputImage.setRGB(x, y, 0x00FF00);
                     xsum += x;
                     ysum += y;
@@ -123,13 +123,13 @@ public class ImageProcessingP1 {
         int leftX = xcenter - leftWidth;
 
         g.drawLine(xcenter, ycenter - 10, xcenter, ycenter + 10);
-        g.drawLine(xcenter, ycenter, xcenter + rightWidth, ycenter);
-        g.drawLine(xcenter, ycenter, xcenter - leftWidth, ycenter);
-        g.drawLine(xcenter + rightWidth, ycenter - 8, xcenter + rightWidth, ycenter + 8);
-        g.drawLine(xcenter - leftWidth, ycenter - 8, xcenter - leftWidth, ycenter + 8);
+        g.drawLine(xcenter, ycenter, rightX, ycenter);
+        g.drawLine(xcenter, ycenter, leftX, ycenter);
+        g.drawLine(rightX, ycenter - 8, rightX, ycenter + 8);
+        g.drawLine(leftX, ycenter - 8, leftX, ycenter + 8);
 
         g.setColor(Color.cyan);
-        int calcXCenter = ((xcenter + rightWidth) + (xcenter - leftWidth)) / 2;
+        int calcXCenter = ((rightX) + (leftX)) / 2;
         g.drawLine(calcXCenter, ycenter + 15, calcXCenter, ycenter - 15);
 
         // width labels, px and % screen width
