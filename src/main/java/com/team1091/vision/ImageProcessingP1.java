@@ -4,19 +4,15 @@ import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class ImageProcessingP1 {
 
     public static void main(String[] args) throws IOException {
-//        Webcam webcam = Webcam.getDefault();
-//        webcam.open();
-//        BufferedImage input = webcam.getImage();
-//        BufferedImage out = process(input);
-//        ImageIO.write(out , "PNG", new File("hashTagYolo.png"));
 
         Webcam webcam = Webcam.getDefault();
         webcam.setViewSize(WebcamResolution.VGA.getSize());
@@ -49,20 +45,6 @@ public class ImageProcessingP1 {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.pack();
         window.setVisible(true);
-
-
-        //String dir = "C:\\Users\\Team1091\\Desktop\\PhotoSamplesSpike_2017\\Good";
-//        String dir = "C:\\Users\\Team1091\\Desktop\\PhotoSamplesSpike_2017\\TestWidth";
-//        File directory = new File(dir);
-//        File[] flist = directory.listFiles();
-//        dir += "_PROCESSED";
-//        directory = new File(dir);
-//        directory.mkdir();
-//        for (int i = 0; i < flist.length; i++) {
-//            BufferedImage image = ImageIO.read(flist[i]);
-//            BufferedImage out = process(image);
-//            ImageIO.write(out, "PNG", new File(dir + "\\" + flist[i].getName()));
-//        }
 
     }
 
@@ -103,23 +85,8 @@ public class ImageProcessingP1 {
         Graphics2D g = outputImage.createGraphics();
         g.setColor(Color.RED);
 
-
-//        g.fillRect(xcenter - 5, ycenter - 5, 10, 10);
-//        g.drawLine(xcenter-10, ycenter-5,xcenter+10, ycenter-5);
-//        g.drawLine(xcenter+10, ycenter-5, xcenter, ycenter+10);
-//        g.drawLine(xcenter, ycenter+10, xcenter-10, ycenter-5);
-
-//        g.setColor(Color.pink);
-//        g.drawLine(xcenter-10, ycenter+5,xcenter+10, ycenter+5);
-//        g.drawLine(xcenter+10, ycenter+5, xcenter, ycenter-10);
-//        g.drawLine(xcenter, ycenter-10, xcenter-10, ycenter+5);
-//        g.setColor(Color.orange);
-
-
         //Distance
         int counter = 0;
-
-
         int rightWidth = 0;
         int leftWidth = 0;
         for (int x = xcenter; x < outputImage.getWidth(); x++) {
@@ -149,11 +116,6 @@ public class ImageProcessingP1 {
         }
         int width = leftWidth + rightWidth;
 
-        // System.out.println("Width = " + width);
-        //F = P * D * (1/W)
-        //(F * W) / P = D
-        //F = 35p * 60in * (1/2in)
-        //F = 1050 p
         double distance = (4120 / (1.059984 * width - 3.89)) + 0.808314;
         System.out.println(distance);
 
@@ -165,7 +127,7 @@ public class ImageProcessingP1 {
         g.drawLine(xcenter, ycenter, xcenter - leftWidth, ycenter);
         g.drawLine(xcenter + rightWidth, ycenter - 8, xcenter + rightWidth, ycenter + 8);
         g.drawLine(xcenter - leftWidth, ycenter - 8, xcenter - leftWidth, ycenter + 8);
-        g.drawString("" + width, xcenter, ycenter - 25);
+
         g.setColor(Color.cyan);
         int calcXCenter = ((xcenter + rightWidth) + (xcenter - leftWidth)) / 2;
         g.drawLine(calcXCenter, ycenter + 15, calcXCenter, ycenter - 15);
