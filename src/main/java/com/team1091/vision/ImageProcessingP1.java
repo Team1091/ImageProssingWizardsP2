@@ -9,8 +9,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 public class ImageProcessingP1 {
+
+    public static final DecimalFormat df = new DecimalFormat("#.0");
 
     public static void main(String[] args) throws IOException {
 
@@ -117,7 +120,6 @@ public class ImageProcessingP1 {
         int width = leftWidth + rightWidth;
 
         double distance = (4120 / (1.059984 * width - 3.89)) + 0.808314;
-        System.out.println(distance);
 
         int rightX = xcenter + rightWidth;
         int leftX = xcenter - leftWidth;
@@ -134,7 +136,7 @@ public class ImageProcessingP1 {
 
         // width labels, px and % screen width
         g.drawString(width + " px", xcenter, ycenter - 25);
-        g.drawString(((float) width / (float) inputImage.getWidth() * 100f) + " %", xcenter, ycenter + 35);
+        g.drawString(df.format(distance) + " in", xcenter, ycenter + 35);
 
         return outputImage;
     }
