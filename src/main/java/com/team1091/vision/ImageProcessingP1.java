@@ -3,6 +3,9 @@ package com.team1091.vision;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
+import com.github.sarxos.webcam.ds.ipcam.IpCamDeviceRegistry;
+import com.github.sarxos.webcam.ds.ipcam.IpCamDriver;
+import com.github.sarxos.webcam.ds.ipcam.IpCamMode;
 
 import javax.swing.JFrame;
 import java.awt.Color;
@@ -13,9 +16,14 @@ import java.text.DecimalFormat;
 
 public class ImageProcessingP1 {
 
+    static {
+        Webcam.setDriver(new IpCamDriver());
+    }
+
     public static final DecimalFormat df = new DecimalFormat("#.0");
 
     public static void main(String[] args) throws IOException {
+        IpCamDeviceRegistry.register("RoboRioCam", "http://roborio-1091-frc.local:1181/stream.mjpg", IpCamMode.PUSH);
 
         Webcam webcam = Webcam.getDefault();
         webcam.setViewSize(WebcamResolution.VGA.getSize());
