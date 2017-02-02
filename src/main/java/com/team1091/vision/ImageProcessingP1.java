@@ -16,23 +16,20 @@ import java.text.DecimalFormat;
 
 public class ImageProcessingP1 {
 
-    static {
-        Webcam.setDriver(new IpCamDriver());
-    }
-
     public static final DecimalFormat df = new DecimalFormat("#.0");
 
     public static void main(String[] args) throws IOException {
-        IpCamDeviceRegistry.register("RoboRioCam", "http://roborio-1091-frc.local:1181/stream.mjpg", IpCamMode.PUSH);
+
+        if (args.length != 1) {
+            Webcam.setDriver(new IpCamDriver());
+            IpCamDeviceRegistry.register("RoboRioCam", "http://roborio-1091-frc.local:1181/stream.mjpg", IpCamMode.PUSH);
+        }
 
         Webcam webcam = Webcam.getDefault();
         webcam.setViewSize(WebcamResolution.VGA.getSize());
 
         WebcamPanel panel = new WebcamPanel(webcam);
-        panel.setFPSDisplayed(true);
-        panel.setDisplayDebugInfo(true);
-        panel.setImageSizeDisplayed(true);
-        panel.setMirrored(true);
+
         panel.setPainter(new WebcamPanel.Painter() {
             @Override
             public void paintPanel(WebcamPanel panel, Graphics2D g2) {
@@ -52,7 +49,6 @@ public class ImageProcessingP1 {
 
         JFrame window = new JFrame("Test webcam panel");
         window.add(panel);
-        window.setResizable(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.pack();
         window.setVisible(true);
@@ -70,14 +66,15 @@ public class ImageProcessingP1 {
 
         for (int x = 0; x < inputImage.getWidth(); x++) {
             for (int y = 0; y < inputImage.getHeight(); y++) {
-                int green = new Color(inputImage.getRGB(x, y)).getGreen();
+                Color color = new Color(inputImage.getRGB(x, y));
+                int green = color.getGreen();
                 if (green > 251) {
                     outputImage.setRGB(x, y, 0x00FF00);
                     xsum += x;
                     ysum += y;
                     totalcount++;
                 } else {
-                    outputImage.setRGB(x, y, 0x000000);
+                    outputImage.setRGB(x, y, color.getRGB());
                 }
             }
         }

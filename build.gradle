@@ -21,3 +21,8 @@ dependencies {
     compile "com.github.sarxos:webcam-capture-driver-ipcam:0.3.11"
 }
 
+task runlocal(type: JavaExec) {
+    main = mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    args = ["local"]
+}
