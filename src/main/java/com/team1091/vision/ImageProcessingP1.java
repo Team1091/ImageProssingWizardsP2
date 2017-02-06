@@ -12,9 +12,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.text.DecimalFormat;
 
 public class ImageProcessingP1 {
+
+    public static final String hostName = "roborio-1091-frc.local";
+    public static final int portNumber = 5800;
 
     public static final DecimalFormat df = new DecimalFormat("#.0");
 
@@ -30,6 +35,9 @@ public class ImageProcessingP1 {
 
         WebcamPanel panel = new WebcamPanel(webcam);
 
+        Socket socket = new Socket(hostName, portNumber);
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
         panel.setPainter(new WebcamPanel.Painter() {
             @Override
             public void paintPanel(WebcamPanel panel, Graphics2D g2) {
@@ -39,7 +47,10 @@ public class ImageProcessingP1 {
             @Override
             public void paintImage(WebcamPanel panel, BufferedImage image, Graphics2D g2) {
                 try {
-                    BufferedImage out = process(image);
+                    TargetingOutput targetingOutput = process(image);
+                    out.write(targetingOutput.getInstructions() + " \n");
+
+                    BufferedImage out = targetingOutput.drawOntoImage(targetingOutput.processedImage);
                     g2.drawImage(out, 0, 0, null);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -55,7 +66,7 @@ public class ImageProcessingP1 {
 
     }
 
-    public static BufferedImage process(BufferedImage inputImage) throws IOException {
+    public static TargetingOutput process(BufferedImage inputImage) throws IOException {
 
         BufferedImage outputImage = new BufferedImage(inputImage.getWidth(), inputImage.getHeight(),
                 BufferedImage.TYPE_INT_RGB);
@@ -123,27 +134,24 @@ public class ImageProcessingP1 {
             }
         }
         int width = leftWidth + rightWidth;
-
         double distance = (4120 / (1.059984 * width - 3.89)) + 0.808314;
 
-        int rightX = xcenter + rightWidth;
-        int leftX = xcenter - leftWidth;
+        TargetingOutput targetingOutput = new TargetingOutput();
+        targetingOutput.imageWidth = inputImage.getWidth();
+        targetingOutput.imageHeight = inputImage.getHeight();
 
-        g.drawLine(xcenter, ycenter - 10, xcenter, ycenter + 10);
-        g.drawLine(xcenter, ycenter, rightX, ycenter);
-        g.drawLine(xcenter, ycenter, leftX, ycenter);
-        g.drawLine(rightX, ycenter - 8, rightX, ycenter + 8);
-        g.drawLine(leftX, ycenter - 8, leftX, ycenter + 8);
+        targetingOutput.rightX = xcenter + rightWidth;
+        targetingOutput.leftX = xcenter - leftWidth;
+        targetingOutput.calcXCenter = (targetingOutput.rightX + targetingOutput.leftX) / 2;
 
-        g.setColor(Color.cyan);
-        int calcXCenter = ((rightX) + (leftX)) / 2;
-        g.drawLine(calcXCenter, ycenter + 15, calcXCenter, ycenter - 15);
-
-        // width labels, px and % screen width
-        g.drawString(width + " px", xcenter, ycenter - 25);
-        g.drawString(df.format(distance) + " in", xcenter, ycenter + 35);
-
-        return outputImage;
+        targetingOutput.xcenter = xcenter;
+        targetingOutput.ycenter = ycenter;
+        targetingOutput.rightWidth = rightWidth;
+        targetingOutput.leftWidth = leftWidth;
+        targetingOutput.width = width;
+        targetingOutput.distance = distance;
+        targetingOutput.processedImage = outputImage;
+        return targetingOutput;
     }
 
 
