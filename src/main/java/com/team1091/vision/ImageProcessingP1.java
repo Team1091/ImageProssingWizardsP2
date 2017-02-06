@@ -11,15 +11,17 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DecimalFormat;
 
 public class ImageProcessingP1 {
 
     public static final String hostName = "roborio-1091-frc.local";
-    public static final int portNumber = 5800;
+    public static final int portNumber = 5805;
 
     public static final DecimalFormat df = new DecimalFormat("#.0");
 
@@ -35,9 +37,6 @@ public class ImageProcessingP1 {
 
         WebcamPanel panel = new WebcamPanel(webcam);
 
-        Socket socket = new Socket(hostName, portNumber);
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
         panel.setPainter(new WebcamPanel.Painter() {
             @Override
             public void paintPanel(WebcamPanel panel, Graphics2D g2) {
@@ -48,10 +47,11 @@ public class ImageProcessingP1 {
             public void paintImage(WebcamPanel panel, BufferedImage image, Graphics2D g2) {
                 try {
                     TargetingOutput targetingOutput = process(image);
-                    out.write(targetingOutput.getInstructions() + " \n");
 
-                    BufferedImage out = targetingOutput.drawOntoImage(targetingOutput.processedImage);
-                    g2.drawImage(out, 0, 0, null);
+                    send(targetingOutput.getInstructions());
+
+                    g2.drawImage(targetingOutput.drawOntoImage(targetingOutput.processedImage), 0, 0, null);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -63,6 +63,24 @@ public class ImageProcessingP1 {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.pack();
         window.setVisible(true);
+
+    }
+
+    public static void send(float turn) {
+//        String url = "http://roborio-1091-frc.local:1181/steer/" +turn;
+
+        try {
+            URL url = new URL("http://localhost:" + portNumber + "/steer/" + turn);
+            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+            br.read();
+            br.close();
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
