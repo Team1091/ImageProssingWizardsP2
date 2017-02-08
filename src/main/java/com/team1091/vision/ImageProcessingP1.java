@@ -11,12 +11,11 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DecimalFormat;
+
+import static spark.Spark.get;
+import static spark.Spark.port;
 
 public class ImageProcessingP1 {
 
@@ -24,6 +23,8 @@ public class ImageProcessingP1 {
     public static final int portNumber = 5805;
 
     public static final DecimalFormat df = new DecimalFormat("#.0");
+
+    private static float center = 0;
 
     public static void main(String[] args) throws IOException {
 
@@ -48,7 +49,7 @@ public class ImageProcessingP1 {
                 try {
                     TargetingOutput targetingOutput = process(image);
 
-                    send(targetingOutput.getInstructions());
+                    center = targetingOutput.getInstructions();
 
                     g2.drawImage(targetingOutput.drawOntoImage(targetingOutput.processedImage), 0, 0, null);
 
@@ -64,25 +65,12 @@ public class ImageProcessingP1 {
         window.pack();
         window.setVisible(true);
 
+        port(5805);
+        get("/", (req, res) -> {
+            return center;
+        });
     }
 
-    public static void send(float turn) {
-//        String url = "http://roborio-1091-frc.local:1181/steer/" +turn;
-
-        try {
-            URL url = new URL("http://localhost:" + portNumber + "/steer/" + turn);
-            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-            br.read();
-            br.close();
-
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public static TargetingOutput process(BufferedImage inputImage) throws IOException {
 
