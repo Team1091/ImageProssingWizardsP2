@@ -67,7 +67,7 @@ public class ImageProcessingP1 {
         window.setVisible(true);
 
         port(5805);
-        get("/", (req, res) -> center);
+        get("/", (req, res) -> center); //have webserver that displays center value
     }
 
 
