@@ -8,6 +8,7 @@ import com.github.sarxos.webcam.ds.ipcam.IpCamDriver;
 import com.github.sarxos.webcam.ds.ipcam.IpCamMode;
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -61,14 +62,12 @@ public class ImageProcessingP1 {
 
         JFrame window = new JFrame("Test webcam panel");
         window.add(panel);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.pack();
         window.setVisible(true);
 
         port(5805);
-        get("/", (req, res) -> {
-            return center;
-        });
+        get("/", (req, res) -> center);
     }
 
 
@@ -85,7 +84,9 @@ public class ImageProcessingP1 {
             for (int y = 0; y < inputImage.getHeight(); y++) {
                 Color color = new Color(inputImage.getRGB(x, y));
                 int green = color.getGreen();
-                if (green > 251) {
+                int red = color.getRed();
+                int blue = color.getBlue();
+                if (green > 251 && blue < 240 && red < 240) {
                     outputImage.setRGB(x, y, 0x00FF00);
                     xsum += x;
                     ysum += y;
