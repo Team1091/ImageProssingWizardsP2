@@ -86,7 +86,8 @@ public class ImageProcessingP1 {
                 int green = color.getGreen();
                 int red = color.getRed();
                 int blue = color.getBlue();
-                if (green > 251 && blue < 240 && red < 240) {
+                int brightness = (green + red + blue) / 3;
+                if (green > blue + 30 && green > red + 30 ) {
                     outputImage.setRGB(x, y, 0x00FF00);
                     xsum += x;
                     ysum += y;
