@@ -35,7 +35,7 @@ public class ImageProcessingP1 {
         }
 
         Webcam webcam = Webcam.getDefault();
-        webcam.setViewSize(WebcamResolution.VGA.getSize());
+//        webcam.setViewSize(WebcamResolution.VGA.getSize());
 
         WebcamPanel panel = new WebcamPanel(webcam);
 
