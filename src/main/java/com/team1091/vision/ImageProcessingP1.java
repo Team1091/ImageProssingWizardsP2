@@ -95,7 +95,10 @@ public class ImageProcessingP1 {
         port(5805);
         get("/", (req, res) -> center + "," + distance); //have webserver that displays center value
     }
-
+    public static float getDistance(int widthInPixels, int totalImagePixelWidth) {
+        // TODO: deal with different camera pixelcounts
+        return (float) (104.4742249664 * Math.exp(-0.0484408778 * (double) widthInPixels));
+    }
 
     public static TargetingOutput process(BufferedImage inputImage) throws IOException {
 
@@ -168,7 +171,7 @@ public class ImageProcessingP1 {
             }
         }
         int width = leftWidth + rightWidth;
-        distance = (float) ((4120 / (1.059984 * width - 3.89)) + 0.808314);
+        distance = getDistance(width, inputImage.getWidth());
 
         TargetingOutput targetingOutput = new TargetingOutput();
         targetingOutput.imageWidth = inputImage.getWidth();
