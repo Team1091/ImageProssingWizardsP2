@@ -2,7 +2,6 @@ package com.team1091.vision;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
-import com.github.sarxos.webcam.WebcamResolution;
 import com.github.sarxos.webcam.ds.ipcam.IpCamDeviceRegistry;
 import com.github.sarxos.webcam.ds.ipcam.IpCamDriver;
 import com.github.sarxos.webcam.ds.ipcam.IpCamMode;
@@ -52,7 +51,32 @@ public class ImageProcessingP1 {
 
                     center = targetingOutput.getInstructions();
 
-                    g2.drawImage(targetingOutput.drawOntoImage(targetingOutput.processedImage), 0, 0, null);
+                    BufferedImage outImage = targetingOutput.drawOntoImage(targetingOutput.processedImage);
+
+                    // Render the image keeping aspect ratio
+                    int imageX = outImage.getWidth();
+                    int imageY = outImage.getHeight();
+
+                    float imageAspectRatio = (float) imageX / (float) imageY;
+
+                    int panelX = panel.getWidth();
+                    int panelY = panel.getHeight();
+
+                    float screenAspectRatio = (float) panelX / (float) panelY;
+
+
+                    if (imageAspectRatio < screenAspectRatio) {
+                        // widescreen - y to the max
+                        int scaledImageX = (int) (panelY * imageAspectRatio);
+                        int scaledImageY = panelY;
+                        g2.drawImage(outImage, (panelX - scaledImageX) / 2, 0, scaledImageX, scaledImageY, null);
+
+                    } else {
+                        //tallscreen - x to the max
+                        int scaledImageX = panelX;
+                        int scaledImageY = (int) (panelX / imageAspectRatio);
+                        g2.drawImage(outImage, 0, (panelY - scaledImageY) / 2, scaledImageX, scaledImageY, null);
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -87,7 +111,7 @@ public class ImageProcessingP1 {
                 int red = color.getRed();
                 int blue = color.getBlue();
 
-                if ( green > blue + 10 &&green > red + 10 && green > 128 ) {
+                if (green > blue + 10 && green > red + 10 && green > 128) {
                     outputImage.setRGB(x, y, 0x00FF00);
                     xsum += x;
                     ysum += y;
