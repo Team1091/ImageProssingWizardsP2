@@ -25,6 +25,7 @@ public class ImageProcessingP1 {
     public static final DecimalFormat df = new DecimalFormat("#.0");
 
     private static float center = 0;
+    private static float distance = 0;
 
     public static void main(String[] args) throws IOException {
 
@@ -50,6 +51,7 @@ public class ImageProcessingP1 {
                     TargetingOutput targetingOutput = process(image);
 
                     center = targetingOutput.getInstructions();
+                    distance = targetingOutput.distance;
 
                     BufferedImage outImage = targetingOutput.drawOntoImage(targetingOutput.processedImage);
 
@@ -91,7 +93,7 @@ public class ImageProcessingP1 {
         window.setVisible(true);
 
         port(5805);
-        get("/", (req, res) -> center); //have webserver that displays center value
+        get("/", (req, res) -> center + "," + distance); //have webserver that displays center value
     }
 
 
@@ -166,7 +168,7 @@ public class ImageProcessingP1 {
             }
         }
         int width = leftWidth + rightWidth;
-        double distance = (4120 / (1.059984 * width - 3.89)) + 0.808314;
+        distance = (float) ((4120 / (1.059984 * width - 3.89)) + 0.808314);
 
         TargetingOutput targetingOutput = new TargetingOutput();
         targetingOutput.imageWidth = inputImage.getWidth();

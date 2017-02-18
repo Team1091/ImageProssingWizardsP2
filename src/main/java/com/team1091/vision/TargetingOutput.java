@@ -18,7 +18,7 @@ public class TargetingOutput {
     int leftWidth;
     int width;
 
-    double distance;
+    float distance;
     BufferedImage processedImage;
     public int rightX;
     public int leftX;
