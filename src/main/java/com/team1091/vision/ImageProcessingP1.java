@@ -35,7 +35,7 @@ public class ImageProcessingP1 {
         }
 
         Webcam webcam = Webcam.getDefault();
-        webcam.setViewSize(WebcamResolution.VGA.getSize());
+//        webcam.setViewSize(WebcamResolution.VGA.getSize());
 
         WebcamPanel panel = new WebcamPanel(webcam);
 
@@ -86,8 +86,8 @@ public class ImageProcessingP1 {
                 int green = color.getGreen();
                 int red = color.getRed();
                 int blue = color.getBlue();
-                int brightness = (green + red + blue) / 3;
-                if (green > blue + 30 && green > red + 30 ) {
+
+                if ( green > blue + 10 &&green > red + 10 && green > 128 ) {
                     outputImage.setRGB(x, y, 0x00FF00);
                     xsum += x;
                     ysum += y;
