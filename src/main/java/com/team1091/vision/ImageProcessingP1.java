@@ -19,9 +19,6 @@ import static spark.Spark.port;
 
 public class ImageProcessingP1 {
 
-    public static final String hostName = "roborio-1091-frc.local";
-    public static final int portNumber = 5805;
-
     public static final DecimalFormat df = new DecimalFormat("#.0");
 
     private static float center = 0;
@@ -35,8 +32,6 @@ public class ImageProcessingP1 {
         }
 
         Webcam webcam = Webcam.getDefault();
-//        webcam.setViewSize(WebcamResolution.VGA.getSize());
-
         WebcamPanel panel = new WebcamPanel(webcam);
 
         panel.setPainter(new WebcamPanel.Painter() {
@@ -95,6 +90,7 @@ public class ImageProcessingP1 {
         port(5805);
         get("/", (req, res) -> center + "," + distance); //have webserver that displays center value
     }
+
     public static float getDistance(int widthInPixels, int totalImagePixelWidth) {
         // TODO: deal with different camera pixelcounts
         return (float) (104.4742249664 * Math.exp(-0.0484408778 * (double) widthInPixels));
@@ -137,9 +133,6 @@ public class ImageProcessingP1 {
             xcenter = (int) (xsum / totalcount);
             ycenter = (int) (ysum / totalcount);
         }
-
-        Graphics2D g = outputImage.createGraphics();
-        g.setColor(Color.RED);
 
         //Distance
         int counter = 0;
